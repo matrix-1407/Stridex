@@ -1026,3 +1026,74 @@ body.is-scrolled .floating-nav {
     gap: 8px;
   }
 }
+
+/* --- AI Panel Styles --- */
+.ai-panel__body {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.ai-message {
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(144, 216, 255, 0.08);
+  border: 1px solid rgba(144, 216, 255, 0.15);
+}
+
+#ai-insight-text {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.ai-recommendation {
+  font-size: 0.95rem;
+  color: var(--text-soft);
+  margin-bottom: 8px;
+}
+
+.ai-motivation {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--accent-blue);
+  opacity: 0.8;
+}
+
+.ai-session {
+  padding-top: 16px;
+  border-top: 1px solid var(--surface-border);
+}
+
+.ai-session h4 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.ai-session-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.ai-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ai-stat span {
+  font-size: 0.8rem;
+  color: var(--text-soft);
+}
+
+.ai-stat strong {
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  font-family: "Plus Jakarta Sans", sans-serif;
+}

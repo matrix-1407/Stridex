@@ -9,6 +9,9 @@ import {
   normalizeSnapshot,
   pushHistorySample,
 } from "./dashboard-core.mjs";
+import { analyzeData } from "./aiEngine.mjs";
+import { fetchAIInsight } from "./llmService.mjs";
+import { bindAIUI, updateAIPanel } from "./uiBinder.mjs";
 
 const FIREBASE_CONFIG_PLACEHOLDER = {
   apiKey: "AIzaSyACtwaN1muO2zFma4xL9w-w-u6hsOGbDo0",
@@ -40,7 +43,6 @@ const dom = {
   insightDetail: document.getElementById("insight-detail"),
   postureTag: document.getElementById("posture-tag"),
   activityTag: document.getElementById("activity-tag"),
-  trendSummary: document.getElementById("trend-summary"),
   scoreRing: document.getElementById("score-ring"),
   ringScore: document.getElementById("ring-score"),
   stabilityValue: document.getElementById("stability-value"),
@@ -70,6 +72,14 @@ const state = {
 const charts = createCharts();
 const firebaseReady = isFirebaseConfigured(firebaseConfig);
 
+const aiDom = bindAIUI();
+const aiState = {
+  lastLlmUpdate: 0,
+  llmInterval: 15000,
+  currentLlmData: null,
+  isFetching: false
+};
+
 initScrollReveal();
 applyScrollState();
 renderDashboard();
@@ -86,6 +96,27 @@ window.setInterval(() => {
   renderStatusBlock();
   renderInsights();
   renderDiagnostics();
+
+  // --- AI ENGINE UPDATE ---
+  if (state.history.length > 0) {
+    const ruleData = analyzeData(state.history);
+    const now = Date.now();
+    
+    // Throttle Gemini API calls to avoid spam
+    if (now - aiState.lastLlmUpdate > aiState.llmInterval && !aiState.isFetching) {
+      aiState.isFetching = true;
+      fetchAIInsight(ruleData).then(llmData => {
+        if (llmData) aiState.currentLlmData = llmData;
+        aiState.lastLlmUpdate = Date.now();
+        aiState.isFetching = false;
+        updateAIPanel(aiDom, ruleData, aiState.currentLlmData);
+      }).catch(() => {
+        aiState.isFetching = false;
+      });
+    } else {
+      updateAIPanel(aiDom, ruleData, aiState.currentLlmData);
+    }
+  }
 }, 1000);
 
 function isFirebaseConfigured(config) {
@@ -136,6 +167,7 @@ function connectFirebase() {
             label: formatSampleLabel(timestamp),
             steps: metrics.steps,
             postureScore: metrics.postureScore,
+            snapshot: metrics
           },
           MAX_HISTORY_SAMPLES
         );
@@ -331,7 +363,6 @@ function renderInsights() {
   dom.insightDetail.textContent = insight.detail;
   dom.postureTag.textContent = `Posture: ${state.hasReceivedData ? state.metrics.posture : "No data yet"}`;
   dom.activityTag.textContent = `Activity: ${state.hasReceivedData ? state.metrics.activity : "No data yet"}`;
-  dom.trendSummary.textContent = buildTrendSummary(state.history);
 
   const postureTone = state.hasReceivedData ? getMetricTone("postureScore", state.metrics.postureScore) : "info";
   const stabilityTone = state.hasReceivedData ? getMetricTone("stability", state.metrics.stability) : "info";

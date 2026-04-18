@@ -167,10 +167,29 @@
         </div>
 
         <div class="ai-panel panel-shell" id="ai-panel">
-          <p class="eyebrow">Trend summary</p>
-          <h3>Future-ready AI slot</h3>
-          <p id="trend-summary">Trend summary will appear after a few live samples.</p>
-          <p class="ai-note">Reserved for recommendations, anomaly detection, or coach-style feedback later.</p>
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">🧠 AI Engine</p>
+              <h3>Smart Insights</h3>
+            </div>
+          </div>
+          <div class="ai-panel__body">
+            <div class="ai-message">
+              <p id="ai-insight-text">Analyzing real-time movement...</p>
+              <p id="ai-recommendation-text" class="ai-recommendation"></p>
+              <p id="ai-motivation-text" class="ai-motivation" style="display: none;"></p>
+            </div>
+            
+            <div class="ai-session">
+              <h4>Rule-Based ML Analysis</h4>
+              <div class="ai-session-grid">
+                <div class="ai-stat"><span>Movement Profile</span><strong id="ai-profile">--</strong></div>
+                <div class="ai-stat"><span>Strain Risk</span><strong id="ai-risk">--</strong></div>
+                <div class="ai-stat"><span>Anomaly Status</span><strong id="ai-anomaly">--</strong></div>
+                <div class="ai-stat"><span>Trend Vector</span><strong id="ai-vector">--</strong></div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
