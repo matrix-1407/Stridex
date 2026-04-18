@@ -1,22 +1,68 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Stridex Dashboard</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>👟 Stridex Smart Shoe Dashboard</h1>
+<main class="shell">
+  <section class="hero">
+    <p class="eyebrow">Live Firebase Dashboard</p>
+    <h1>Stridex Smart Shoe</h1>
+    <p class="subtitle">Realtime data from the <span id="database-path">stridex</span> node in Firebase Realtime Database.</p>
+    <div class="status-row">
+      <span class="status-dot" id="connection-dot"></span>
+      <span id="connection-status">Connecting to Firebase...</span>
+      <a id="database-link" href="https://smart-shoe-001a-default-rtdb.asia-southeast1.firebasedatabase.app/" target="_blank" rel="noreferrer">Open database</a>
+    </div>
+  </section>
 
-<div class="card">
-  <p>Steps: <span id="steps">--</span></p>
-  <p>Posture Score: <span id="score">--</span>%</p>
-  <p>Roll: <span id="roll">--</span>°</p>
-  <p>Distance Walked: <span id="walked">--</span> m</p>
-  <p>Stability: <span id="stability">--</span>%</p>
-  <p>Posture: <span id="posture">--</span></p>
-  <p>Activity: <span id="activity">--</span></p>
-</div>
+  <section class="grid" aria-live="polite">
+    <article class="card accent">
+      <span class="label">Activity</span>
+      <strong id="activity">--</strong>
+    </article>
+    <article class="card">
+      <span class="label">Posture</span>
+      <strong id="posture">--</strong>
+    </article>
+    <article class="card">
+      <span class="label">Steps</span>
+      <strong id="steps">--</strong>
+    </article>
+    <article class="card">
+      <span class="label">Distance</span>
+      <strong><span id="distance">--</span> cm</strong>
+    </article>
+    <article class="card">
+      <span class="label">Distance Walked</span>
+      <strong><span id="walked">--</span> m</strong>
+    </article>
+    <article class="card">
+      <span class="label">Posture Score</span>
+      <strong><span id="score">--</span>%</strong>
+    </article>
+    <article class="card">
+      <span class="label">Stability</span>
+      <strong><span id="stability">--</span>%</strong>
+    </article>
+    <article class="card">
+      <span class="label">Roll</span>
+      <strong><span id="roll">--</span>°</strong>
+    </article>
+    <article class="card">
+      <span class="label">Average Roll</span>
+      <strong><span id="avg-roll">--</span>°</strong>
+    </article>
+    <article class="card">
+      <span class="label">Alerts</span>
+      <strong id="alerts">--</strong>
+    </article>
+  </section>
+</main>
 
 <script type="module" src="script.js"></script>
 

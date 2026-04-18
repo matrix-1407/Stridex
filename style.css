@@ -1,19 +1,121 @@
 body {
-  font-family: Arial;
-  background: #111;
-  color: white;
-  text-align: center;
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(29, 185, 84, 0.18), transparent 28%),
+    radial-gradient(circle at top right, rgba(0, 173, 181, 0.16), transparent 24%),
+    linear-gradient(180deg, #0d0f12 0%, #11151a 100%);
+  color: #f4f7fb;
+}
+
+.shell {
+  width: min(1100px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 40px 0 56px;
+}
+
+.hero {
+  margin-bottom: 24px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 12px;
+  color: #82e6c4;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+}
+
+.subtitle {
+  margin: 10px 0 18px;
+  max-width: 62ch;
+  color: #b8c2cf;
+}
+
+.status-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 14px;
+  align-items: center;
+  color: #c8d2df;
+}
+
+.status-row a {
+  color: #83f0c8;
+  text-decoration: none;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #6f7c8e;
+  box-shadow: 0 0 0 4px rgba(111, 124, 142, 0.14);
+}
+
+.status-dot.live {
+  background: #31d07f;
+  box-shadow: 0 0 0 4px rgba(49, 208, 127, 0.18);
+}
+
+.status-dot.error {
+  background: #ff6b6b;
+  box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.18);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
 }
 
 .card {
-  background: #1e1e1e;
-  padding: 20px;
-  margin: 20px auto;
-  width: 300px;
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  background: rgba(13, 18, 26, 0.86);
+  border: 1px solid rgba(130, 150, 175, 0.18);
+  border-radius: 18px;
+  padding: 18px 18px 16px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.24);
+  backdrop-filter: blur(10px);
+  min-height: 108px;
 }
 
-span {
-  color: #00ffcc;
+.card.accent {
+  background: linear-gradient(135deg, rgba(49, 208, 127, 0.18), rgba(10, 14, 20, 0.92));
+  border-color: rgba(49, 208, 127, 0.28);
+}
+
+.label {
+  display: block;
+  margin-bottom: 14px;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #9eb0c5;
+}
+
+.card strong {
+  font-size: 1.5rem;
+  color: #ffffff;
+}
+
+#activity {
+  font-size: 1.75rem;
+  color: #7af0c4;
+}
+
+@media (max-width: 640px) {
+  .shell {
+    width: min(100% - 20px, 1100px);
+    padding-top: 24px;
+  }
+
+  .card {
+    min-height: auto;
+  }
 }
