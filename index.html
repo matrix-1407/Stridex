@@ -1,70 +1,268 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Stridex Dashboard</title>
+  <title>Stridex | Smart Shoe IoT Dashboard</title>
+  <meta name="description" content="Stridex smart shoe dashboard with a minimal hero-first live telemetry experience.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+    }
+  }
+  </script>
 </head>
 <body>
+  <div class="site-bg" aria-hidden="true">
+    <div class="ambient-orb ambient-orb--one"></div>
+    <div class="ambient-orb ambient-orb--two"></div>
+    <div class="ambient-grid"></div>
+  </div>
 
-<main class="shell">
-  <section class="hero">
-    <p class="eyebrow">Live Firebase Dashboard</p>
-    <h1>Stridex Smart Shoe</h1>
-    <p class="subtitle">Realtime data from the <span id="database-path">stridex</span> node in Firebase Realtime Database.</p>
-    <div class="status-row">
-      <span class="status-dot" id="connection-dot"></span>
-      <span id="connection-status">Connecting to Firebase...</span>
-      <a id="database-link" href="https://smart-shoe-001a-default-rtdb.asia-southeast1.firebasedatabase.app/" target="_blank" rel="noreferrer">Open database</a>
+  <header class="floating-nav" id="top">
+    <a class="floating-nav__brand" href="#hero" aria-label="Stridex home">
+      <span class="brand-mark">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z"/>
+          <path d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z"/>
+          <path d="M16 17h4"/>
+          <path d="M4 13h4"/>
+        </svg>
+      </span>
+      <span class="brand-copy">
+        <strong>Stridex</strong>
+        <span>Smart movement intelligence</span>
+      </span>
+    </a>
+
+    <nav class="floating-nav__links" aria-label="Primary">
+      <a href="#hero">Overview</a>
+      <a href="#dashboard">Live Metrics</a>
+      <a href="#insights">Insights</a>
+    </nav>
+
+    <div class="floating-nav__meta">
+      <span class="status-chip" id="connection-pill" data-tone="warning">
+        <span class="status-dot"></span>
+        <span id="connection-label">Reconnecting</span>
+      </span>
+      <a class="nav-cta" href="#dashboard">View Dashboard</a>
     </div>
-  </section>
+  </header>
 
-  <section class="grid" aria-live="polite">
-    <article class="card accent">
-      <span class="label">Activity</span>
-      <strong id="activity">--</strong>
-    </article>
-    <article class="card">
-      <span class="label">Posture</span>
-      <strong id="posture">--</strong>
-    </article>
-    <article class="card">
-      <span class="label">Steps</span>
-      <strong id="steps">--</strong>
-    </article>
-    <article class="card">
-      <span class="label">Distance</span>
-      <strong><span id="distance">--</span> cm</strong>
-    </article>
-    <article class="card">
-      <span class="label">Distance Walked</span>
-      <strong><span id="walked">--</span> m</strong>
-    </article>
-    <article class="card">
-      <span class="label">Posture Score</span>
-      <strong><span id="score">--</span>%</strong>
-    </article>
-    <article class="card">
-      <span class="label">Stability</span>
-      <strong><span id="stability">--</span>%</strong>
-    </article>
-    <article class="card">
-      <span class="label">Roll</span>
-      <strong><span id="roll">--</span>°</strong>
-    </article>
-    <article class="card">
-      <span class="label">Average Roll</span>
-      <strong><span id="avg-roll">--</span>°</strong>
-    </article>
-    <article class="card">
-      <span class="label">Alerts</span>
-      <strong id="alerts">--</strong>
-    </article>
-  </section>
-</main>
+  <main class="page-shell">
+    <section class="hero" id="hero">
+      <div class="particle-canvas" id="particle-canvas"></div>
+      <div class="hero__copy reveal-on-scroll is-visible">
+        <p class="eyebrow">IoT Smart Shoe</p>
+        <h1>Move smarter.<br>Step by step.</h1>
+        <p class="hero__lede">
+          Real-time posture & gait intelligence — from your shoe to your screen.
+        </p>
 
-<script type="module" src="script.js"></script>
+        <div class="hero__actions">
+          <a class="button button--primary" href="#dashboard">Live Dashboard</a>
+          <a class="button button--ghost" href="#insights">Insights</a>
+        </div>
 
+        <div class="hero__chips" id="hero-chips" aria-live="polite"></div>
+
+        <div class="hero__meta">
+          <div>
+            <span class="hero__meta-label">Last updated</span>
+            <strong id="last-updated">Awaiting telemetry</strong>
+          </div>
+          <div>
+            <span class="hero__meta-label">Connection</span>
+            <strong id="connection-detail">Waiting for stream</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero__visual reveal-on-scroll is-visible">
+        <div class="shoe-stage">
+          <div class="shoe-halo"></div>
+          <div class="shoe-halo shoe-halo--secondary"></div>
+
+          <div class="shoe-rotator" id="shoe-rotator">
+            <div class="shoe-model" aria-hidden="true">
+              <img
+                class="shoe-img"
+                src="assets/Generate_a_3D_202604190113-Photoroom.png"
+                alt="Stridex smart shoe — 3D render"
+                width="460"
+                height="460"
+                draggable="false"
+              />
+            </div>
+          </div>
+
+          <div class="hero-stat hero-stat--top" id="hero-activity-pill">Activity: No data yet</div>
+          <div class="hero-stat hero-stat--bottom" id="hero-posture-pill">Posture: No data yet</div>
+        </div>
+      </div>
+
+      <a class="scroll-cue" href="#dashboard" aria-label="Scroll to dashboard">
+        <span></span>
+      </a>
+    </section>
+
+    <section class="dashboard" id="dashboard">
+      <div class="dashboard__intro reveal-on-scroll">
+        <p class="eyebrow">Live overview</p>
+        <h2>Essential metrics first</h2>
+        <p>Quickly read live movement quality, then use the lower sections for secondary trends and diagnostics.</p>
+      </div>
+
+      <div class="metric-row reveal-on-scroll" aria-live="polite">
+        <div class="metric-card" data-metric="steps"></div>
+        <div class="metric-card" data-metric="postureScore"></div>
+        <div class="metric-card" data-metric="activity"></div>
+        <div class="metric-card" data-metric="alerts"></div>
+      </div>
+
+      <div class="insight-grid reveal-on-scroll" id="insights">
+        <div class="visual-panel panel-shell" id="visual-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Body status</p>
+              <h3>Posture and stability</h3>
+            </div>
+          </div>
+          <div class="visual-panel__body">
+            <div class="score-ring" id="score-ring" data-tone="info">
+              <div class="score-ring__inner">
+                <span class="score-ring__label">Posture score</span>
+                <strong id="ring-score">--</strong>
+                <span class="score-ring__unit">percent</span>
+              </div>
+            </div>
+
+            <div class="stability-block">
+              <div class="stability-block__head">
+                <span>Stability meter</span>
+                <strong id="stability-value">--%</strong>
+              </div>
+              <div class="stability-track">
+                <div class="stability-fill" id="stability-fill"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="insight-panel panel-shell" id="insight-panel" data-tone="info">
+          <p class="eyebrow">System insight</p>
+          <h3 id="insight-headline">Waiting for telemetry</h3>
+          <p id="insight-detail">Live coaching-style feedback will appear here as soon as telemetry arrives.</p>
+          <div class="tag-row">
+            <span class="info-tag" id="posture-tag">Posture: No data yet</span>
+            <span class="info-tag" id="activity-tag">Activity: No data yet</span>
+          </div>
+        </div>
+
+        <div class="ai-panel panel-shell" id="ai-panel">
+          <p class="eyebrow">Trend summary</p>
+          <h3>Future-ready AI slot</h3>
+          <p id="trend-summary">Trend summary will appear after a few live samples.</p>
+          <p class="ai-note">Reserved for recommendations, anomaly detection, or coach-style feedback later.</p>
+        </div>
+      </div>
+
+      <div class="analytics-grid reveal-on-scroll">
+        <div class="chart-panel panel-shell" id="steps-panel">
+          <div class="panel-head panel-head--compact">
+            <div>
+              <p class="eyebrow">Secondary trend</p>
+              <h3>Step count</h3>
+            </div>
+          </div>
+          <div class="chart-frame">
+            <canvas id="steps-chart"></canvas>
+            <div class="chart-empty" id="steps-empty">No data yet</div>
+          </div>
+        </div>
+
+        <div class="chart-panel panel-shell" id="trend-panel">
+          <div class="panel-head panel-head--compact">
+            <div>
+              <p class="eyebrow">Secondary trend</p>
+              <h3>Posture trend</h3>
+            </div>
+          </div>
+          <div class="chart-frame">
+            <canvas id="trend-chart"></canvas>
+            <div class="chart-empty" id="trend-empty">No data yet</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="diagnostics-panel panel-shell reveal-on-scroll" id="diagnostics">
+        <div class="panel-head panel-head--compact">
+          <div>
+            <p class="eyebrow">Diagnostics</p>
+            <h3>Connection health</h3>
+          </div>
+          <span class="status-chip" id="freshness-pill" data-tone="warning">No data yet</span>
+        </div>
+
+        <div class="diagnostics-grid">
+          <div class="diagnostic-item">
+            <span class="diagnostic-label">Connection</span>
+            <strong id="diagnostic-connection">Reconnecting</strong>
+          </div>
+          <div class="diagnostic-item">
+            <span class="diagnostic-label">Freshness</span>
+            <strong id="diagnostic-freshness">No data yet</strong>
+          </div>
+          <div class="diagnostic-item">
+            <span class="diagnostic-label">Missing fields</span>
+            <strong id="diagnostic-missing">10</strong>
+          </div>
+          <div class="diagnostic-item">
+            <span class="diagnostic-label">Distance</span>
+            <strong id="diagnostic-distance">No data yet</strong>
+          </div>
+          <div class="diagnostic-item">
+            <span class="diagnostic-label">Samples</span>
+            <strong id="diagnostic-samples">0 samples</strong>
+          </div>
+        </div>
+
+        <p class="diagnostic-banner" id="diagnostic-banner">Waiting for Firebase stream.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>&copy; 2026 Stridex &middot; Smart movement intelligence</span>
+    <a href="#hero">Back to top &uarr;</a>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <script type="module" src="script.js"></script>
+  <script type="module">
+    import { initAntigravity } from './antigravity.mjs';
+    const el = document.getElementById('particle-canvas');
+    if (el) {
+      initAntigravity(el, {
+        count: 400,
+        magnetRadius: 8,
+        ringRadius: 16,
+        waveSpeed: 2.2,
+        waveAmplitude: 1.2,
+        particleSize: 1.1,
+        lerpSpeed: 0.04,
+        color: '#5eb8e0',
+        autoAnimate: true,
+        particleVariance: 0.8,
+      });
+    }
+  </script>
 </body>
 </html>
