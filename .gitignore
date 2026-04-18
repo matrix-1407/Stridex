@@ -8,3 +8,7 @@ Desktop.ini
 
 # Environment files
 .env
+
+# Ignored directories
+docs/superpowers/
+tests/
